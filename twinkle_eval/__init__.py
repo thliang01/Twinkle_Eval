@@ -25,7 +25,7 @@
 
 __version__ = "1.1.3"
 __author__ = "Twinkle AI Team"
-__email__ = "tedslin@gmail.com"
+__email__ = "lianghsun@twinkleai.tw"
 __license__ = "MIT"
 
 from .config import ConfigurationManager, load_config
