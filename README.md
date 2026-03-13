@@ -1,9 +1,11 @@
+![Twinkle Eval](assets/Twinkle_Eval.png)
+
 # Twinkle Eval：高效且準確的 AI 評測工具
 
 [![Python](https://img.shields.io/badge/python-≥3.10-blue.svg?logo=python)](https://www.python.org)
 ![GitHub license](https://img.shields.io/github/license/ai-twinkle/Eval)
 [![Website](https://img.shields.io/badge/Website-twinkleai.tw-blue?style=flat)](https://twinkleai.tw/)
-<!-- [![PyPI](https://img.shields.io/pypi/v/lmms-eval)](https://pypi.org/project/lmms-eval) -->
+[![Open in Colab](https://img.shields.io/badge/Open%20in-Colab-orange?logo=google-colab&style=for-the-badge)](https://colab.research.google.com/github/LiuYuWei/llm-colab-application/blob/main/Simon_LLM_Application_Twinkle_Eval_Tool_Google_Gemini_Model_Evaluation.ipynb)
 
 本專案為 LLM（Large Language Model）評測框架，採用並行且隨機化測試方法，提供客觀的模型性能分析與穩定性評估，並支援多種常見評測數據集。
 
@@ -375,6 +377,12 @@ logging:
 
 ## 貢獻者
 
+[![Teds Lin](https://img.shields.io/badge/GitHub-Teds%20Lin-blue?logo=github)](https://github.com/teds-lin)
+[![Liang Hsun Huang](https://img.shields.io/badge/GitHub-Huang%20Liang%20Hsun-blue?logo=github)](https://github.com/lianghsun)
+[![Min Yi Chen](https://img.shields.io/badge/GitHub-Min%20Yi%20Chen-blue?logo=github)](https://github.com/cyc00518)
+[![Dave Sung](https://img.shields.io/badge/GitHub-Dave%20Sung-blue?logo=github)](https://github.com/k1dav)
+[![Thomas Liang](https://img.shields.io/badge/GitHub-Thomas%20Liang-blue?logo=github)](https://github.com/thliang01)
+
 本專案由 [Twinkle AI](https://github.com/ai-twinkle) 與 [APMIC](https://www.apmic.ai/) 合作開發。
 
 ## 授權條款
@@ -387,7 +395,7 @@ logging:
 
 ```bibtex
 @misc{twinkle_eval,
-  author       = {Twinkle AI community},
+  author       = {Teds Lin, Liang Hsun Huang, Min Yi Chen, Dave Sung and Thomas Liang},
   title        = {Twinkle Eval: An Efficient and Accurate AI Evaluation Tool.},
   year         = {2025},
   url          = {https://github.com/ai-twinkle/Eval},
