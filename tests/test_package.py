@@ -5,12 +5,28 @@ tests/test_package.py
 - 版本資訊的可存取性
 - get_info() 不拋出例外且回傳結構正確
 - CLI --version 指令正常退出
+- pyproject.toml 與 __init__.py 版本號一致性
 """
 
+import importlib.metadata
 import subprocess
 import sys
 
 import pytest
+
+
+class TestVersionConsistency:
+    """版本號一致性測試 — pyproject.toml 與 __init__.py 必須同步"""
+
+    def test_module_version_matches_package_metadata(self):
+        """__init__.__version__ 必須與 pyproject.toml 的 version 欄位一致"""
+        import twinkle_eval
+
+        installed_version = importlib.metadata.version("twinkle-eval")
+        assert twinkle_eval.__version__ == installed_version, (
+            f"__init__.py __version__='{twinkle_eval.__version__}' "
+            f"與 pyproject.toml version='{installed_version}' 不一致"
+        )
 
 
 class TestGetVersion:
