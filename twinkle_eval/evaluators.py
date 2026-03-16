@@ -1,6 +1,7 @@
 import json
 import os
 import random
+import re
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -10,6 +11,19 @@ from .dataset import Dataset
 from .evaluation_strategies import EvaluationStrategy
 from .logger import log_error
 from .models import LLM
+
+
+_THINK_END_TAGS = ["</think>", "</reason>", "</reasoning>"]
+
+
+def _strip_think_blocks(text: str) -> str:
+    """取最後一個推理結尾 tag 之後的內容，兼容開頭 tag 被截斷的情況。"""
+    lower = text.lower()
+    for tag in _THINK_END_TAGS:
+        idx = lower.rfind(tag)
+        if idx != -1:
+            return text[idx + len(tag):].strip()
+    return text
 
 
 class RateLimiter:
@@ -107,8 +121,15 @@ class Evaluator:
 
                 question_text, correct_answer, question_id = future_to_data[future]
 
-                # content 為 null 或空字串時（例如 ACE-1 在 skip_special_tokens=true 情況下），
-                # fallback 至 reasoning_content 進行答案提取
+                # 統一推理輸出解析，兼容兩種常見情境：
+                # A. inline think tag（如 Ollama）：content 含 <think>...</think>
+                #    → 剝離 think block，只留結尾的答案部分
+                # B. content=null（如 vLLM skip_special_tokens=true）：
+                #    → fallback 至 reasoning_content
+                if content:
+                    stripped = _strip_think_blocks(content)
+                    content = stripped  # 無 think tag 時原樣返回，有則取 tag 後的部分
+
                 extraction_source = content if content else reasoning_content
                 if extraction_source is None:
                     log_error(f"問題 {question_id} 的 content 與 reasoning_content 均為 null，無法提取答案")
