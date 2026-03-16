@@ -384,6 +384,7 @@ For the latest model evaluation results, visit the [TW Eval Leaderboard](https:/
 [![Min Yi Chen](https://img.shields.io/badge/GitHub-Min%20Yi%20Chen-blue?logo=github)](https://github.com/cyc00518)
 [![Dave Sung](https://img.shields.io/badge/GitHub-Dave%20Sung-blue?logo=github)](https://github.com/k1dav)
 [![Thomas Liang](https://img.shields.io/badge/GitHub-Thomas%20Liang-blue?logo=github)](https://github.com/thliang01)
+[![Ren-Di Wu](https://img.shields.io/badge/GitHub-Ren--Di%20Wu-blue?logo=github)](https://github.com/whats2000)
 
 This project is developed through collaboration between [Twinkle AI](https://github.com/ai-twinkle) and [APMIC](https://www.apmic.ai/).
 
@@ -397,7 +398,7 @@ If you find this evaluation tool helpful, please cite it as follows:
 
 ```bibtex
 @misc{twinkle_eval,
-  author       = {Teds Lin, Liang Hsun Huang, Min Yi Chen, Dave Sung and Thomas Liang},
+  author       = {Teds Lin, Liang Hsun Huang, Min Yi Chen, Dave Sung, Thomas Liang and Ren-Di Wu},
   title        = {Twinkle Eval: An Efficient and Accurate AI Evaluation Tool.},
   year         = {2025},
   url          = {https://github.com/ai-twinkle/Eval},
