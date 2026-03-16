@@ -56,7 +56,6 @@ __all__ = [
     # 版本資訊
     "__version__",
     "__author__",
-    "__email__",
     "__license__",
     # 主要類別
     "TwinkleEvalRunner",
@@ -99,7 +98,6 @@ def get_info():
         "name": "Twinkle Eval",
         "version": __version__,
         "author": __author__,
-        "email": __email__,
         "license": __license__,
         "description": "高效且準確的 AI 模型評測工具",
         "url": "https://github.com/ai-twinkle/Eval",
