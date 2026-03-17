@@ -405,11 +405,7 @@ class TwinkleEvalRunner:
                 log_info(message)
 
             except ImportError as e:
-                msg = (
-                    f"\n❌ 資料集 {dataset_path} 評測失敗：缺少必要套件。\n"
-                    f"   {e}\n"
-                    f"   請執行：pip install twinkle-eval[math]  或  pip install mathruler\n"
-                )
+                msg = f"\n❌ 資料集 {dataset_path} 評測失敗：缺少必要套件。\n   {e}\n"
                 print(msg)
                 log_error(msg.strip())
                 continue
