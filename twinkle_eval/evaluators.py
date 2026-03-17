@@ -112,6 +112,7 @@ class Evaluator:
 
         total_correct_samples = 0
         total_samples = 0
+        total_unparsed = 0
         detailed_results = []
         question_stats: Dict[int, Dict[str, int]] = {}  # question_id -> {"correct": n, "total": n}
 
@@ -195,6 +196,8 @@ class Evaluator:
                     if is_correct:
                         question_stats[question_id]["correct"] += 1
                         total_correct_samples += 1
+                    if predicted_answer is None:
+                        total_unparsed += 1
                     question_stats[question_id]["total"] += 1
                     total_samples += 1
 
@@ -297,6 +300,8 @@ class Evaluator:
                         if is_correct:
                             question_stats[question_id]["correct"] += 1
                             total_correct_samples += 1
+                        if predicted_answer is None:
+                            total_unparsed += 1
                         question_stats[question_id]["total"] += 1
                         total_samples += 1
 
@@ -345,11 +350,17 @@ class Evaluator:
             for detail in detailed_results:
                 f.write(json.dumps(detail, ensure_ascii=False) + "\n")
 
+        unparsed_rate = total_unparsed / total_samples if total_samples else 0.0
         print(f"✅ 評測完成，結果已追加至 {results_path}")
+        if total_unparsed > 0:
+            print(f"⚠️  無法解析: {total_unparsed}/{total_samples} ({unparsed_rate:.1%})")
         metrics = {
             "accuracy": accuracy,
             "pass_at_k": pass_at_k,
             "pass_metric": f"pass@{self.pass_k}",
             "pass_k": self.pass_k,
+            "unparsed_count": total_unparsed,
+            "unparsed_rate": unparsed_rate,
+            "total_count": total_samples,
         }
         return file_path, metrics, results_path

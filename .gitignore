@@ -132,6 +132,7 @@ results/
 
 # real config file
 config.yaml
+config_test_*.yaml
 
 # personal analysis notes (not for commit)
 issues_analysis.md

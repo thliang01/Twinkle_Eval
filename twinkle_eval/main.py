@@ -253,6 +253,8 @@ class TwinkleEvalRunner:
             file_results = []  # 當前檔案的詳細結果
 
             # 對當前檔案進行多次評測
+            file_unparsed_counts: List[int] = []
+            file_total_counts: List[int] = []
             for run in range(repeat_runs):
                 try:
                     file_path_result, metrics, result_path = evaluator.evaluate_file(
@@ -260,6 +262,8 @@ class TwinkleEvalRunner:
                     )
                     file_accuracies.append(metrics["accuracy"])
                     file_pass_ats.append(metrics["pass_at_k"])
+                    file_unparsed_counts.append(metrics.get("unparsed_count", 0))
+                    file_total_counts.append(metrics.get("total_count", 0))
                     file_results.append((file_path_result, metrics, result_path))
                 except Exception as e:
                     log_error(f"評測檔案 {file_path} 失敗: {e}")
@@ -270,6 +274,9 @@ class TwinkleEvalRunner:
                 mean_accuracy = np.mean(file_accuracies)  # 平均準確率
                 std_accuracy = np.std(file_accuracies) if len(file_accuracies) > 1 else 0  # 標準差
                 mean_pass_at_k = np.mean(file_pass_ats) if file_pass_ats else 0.0
+                total_unparsed = sum(file_unparsed_counts)
+                total_evaluated = sum(file_total_counts)
+                unparsed_rate = total_unparsed / total_evaluated if total_evaluated else 0.0
 
                 results.append(
                     {
@@ -278,9 +285,12 @@ class TwinkleEvalRunner:
                         "accuracy_std": std_accuracy,
                         "pass_at_k_mean": mean_pass_at_k,
                         "pass_metric": f"pass@{pass_k}",
+                        "unparsed_count": total_unparsed,
+                        "unparsed_rate": round(unparsed_rate, 4),
                         "individual_runs": {
                             "accuracies": file_accuracies,
                             "pass_at_k": file_pass_ats,
+                            "unparsed_counts": file_unparsed_counts,
                             "results": [r[2] for r in file_results],
                         },
                     }
@@ -303,6 +313,8 @@ class TwinkleEvalRunner:
         dataset_avg_accuracy = np.mean([r["accuracy_mean"] for r in results])
         dataset_avg_std = np.mean([r["accuracy_std"] for r in results])
         dataset_avg_pass_at_k = np.mean([r["pass_at_k_mean"] for r in results])
+        dataset_total_unparsed = sum(r["unparsed_count"] for r in results)
+        dataset_avg_unparsed_rate = float(np.mean([r["unparsed_rate"] for r in results]))
 
         return {
             "results": results,
@@ -310,6 +322,8 @@ class TwinkleEvalRunner:
             "average_std": dataset_avg_std,
             "average_pass_at_k": dataset_avg_pass_at_k,
             "pass_metric": f"pass@{pass_k}",
+            "total_unparsed_count": dataset_total_unparsed,
+            "average_unparsed_rate": round(dataset_avg_unparsed_rate, 4),
         }
 
     def run_evaluation(self, export_formats: Optional[List[str]] = None) -> str:
@@ -376,10 +390,16 @@ class TwinkleEvalRunner:
                 dataset_result["evaluation_method"] = eval_method
                 dataset_results[dataset_path] = dataset_result
 
+                unparsed_info = ""
+                if dataset_result.get("total_unparsed_count", 0) > 0:
+                    unparsed_info = (
+                        f"，無法解析: {dataset_result['total_unparsed_count']} "
+                        f"({dataset_result['average_unparsed_rate']:.1%})"
+                    )
                 message = (
                     f"資料集 {dataset_path} 評測完成（模式: {eval_method}），"
                     f"平均正確率: {dataset_result['average_accuracy']:.2%} "
-                    f"(±{dataset_result['average_std']:.2%})"
+                    f"(±{dataset_result['average_std']:.2%}){unparsed_info}"
                 )
                 print(message)
                 log_info(message)
