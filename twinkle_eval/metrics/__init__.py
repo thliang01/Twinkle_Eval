@@ -11,9 +11,13 @@ from .extractors.logit import LogitExtractor
 from .extractors.math import MathExtractor
 from .extractors.pattern import PatternExtractor
 from .extractors.tool_call import ToolCallExtractor
+from .extractors.ifeval import IFEvalExtractor
+from .extractors.ifbench import IFBenchExtractor
 from .scorers.bfcl import BFCLScorer
 from .scorers.exact import ExactMatchScorer
 from .scorers.math import MathRulerScorer
+from .scorers.ifeval import IFEvalScorer
+from .scorers.ifbench import IFBenchScorer
 
 # Preset：evaluation_method 字串 → (Extractor 類別, Scorer 類別)
 PRESETS: Dict[str, Tuple[Type[Extractor], Type[Scorer]]] = {
@@ -24,6 +28,8 @@ PRESETS: Dict[str, Tuple[Type[Extractor], Type[Scorer]]] = {
     "custom_regex": (CustomRegexExtractor, ExactMatchScorer),
     "bfcl_fc": (ToolCallExtractor, BFCLScorer),
     "bfcl_prompt": (BFCLPromptExtractor, BFCLScorer),
+    "ifeval": (IFEvalExtractor, IFEvalScorer),
+    "ifbench": (IFBenchExtractor, IFBenchScorer),
 }
 
 
@@ -90,4 +96,8 @@ __all__ = [
     "ExactMatchScorer",
     "MathRulerScorer",
     "BFCLScorer",
+    "IFEvalExtractor",
+    "IFEvalScorer",
+    "IFBenchExtractor",
+    "IFBenchScorer",
 ]
