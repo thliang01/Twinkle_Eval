@@ -18,6 +18,8 @@ from .scorers.exact import ExactMatchScorer
 from .scorers.math import MathRulerScorer
 from .scorers.ifeval import IFEvalScorer
 from .scorers.ifbench import IFBenchScorer
+from .extractors.niah import NIAHExtractor
+from .scorers.niah import NIAHScorer
 
 # Preset：evaluation_method 字串 → (Extractor 類別, Scorer 類別)
 PRESETS: Dict[str, Tuple[Type[Extractor], Type[Scorer]]] = {
@@ -30,6 +32,7 @@ PRESETS: Dict[str, Tuple[Type[Extractor], Type[Scorer]]] = {
     "bfcl_prompt": (BFCLPromptExtractor, BFCLScorer),
     "ifeval": (IFEvalExtractor, IFEvalScorer),
     "ifbench": (IFBenchExtractor, IFBenchScorer),
+    "niah": (NIAHExtractor, NIAHScorer),
 }
 
 
@@ -100,4 +103,6 @@ __all__ = [
     "IFEvalScorer",
     "IFBenchExtractor",
     "IFBenchScorer",
+    "NIAHExtractor",
+    "NIAHScorer",
 ]

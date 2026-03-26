@@ -1,0 +1,41 @@
+llm_api:
+  base_url: "http://your-openai-compatible-server/v1"  # API 伺服器網址
+  api_key: "your-api-key"                              # API 金鑰
+  disable_ssl_verify: false                            # 是否停用 SSL 驗證
+  api_rate_limit: -1                                   # 每秒請求限制（-1 為不限制）
+  max_retries: 3                                       # API 呼叫失敗時的重試次數
+  timeout: 120                                         # 單次請求逾時（秒），長文本建議較高
+
+model:
+  name: "model-name"      # 模型名稱
+  temperature: 0.0        # 溫度參數（NIAH 建議 0.0 以確保一致性）
+  top_p: 0.9
+  max_tokens: 512         # NIAH 回答通常很短，512 足夠
+  frequency_penalty: 0.0
+  presence_penalty: 0.0
+  extra_body:
+
+evaluation:
+  dataset_paths:          # 資料集目錄路徑（必填，支援多個）
+    - "datasets/example/niah/kamradt/"
+    # - "datasets/example/niah/needlebench/"
+    # - "datasets/example/niah/longbench/"
+
+  # NIAH 評測（Needle in a Haystack）：
+  # - 測試模型在長文本中檢索特定事實的能力
+  # - NIAHExtractor 直接 pass-through 原始回答（不提取特定格式）
+  # - NIAHScorer 預設使用 substring match（gold answer 是否出現在 response 中）
+  # - 可用 strategy_config 切換評分模式：
+  #     niah_scoring_mode: "substring"（預設）/ "exact" / "f1"
+  #     niah_f1_threshold: 0.5（僅 f1 模式使用）
+  # - 資料集欄位：id, question（含完整 prompt + context）, answer
+  # - 可用 --generate-niah 指令產生自訂 NIAH 測試集
+  evaluation_method: "niah"
+
+  # 評分模式設定（選填）
+  # strategy_config:
+  #   niah_scoring_mode: "substring"  # "substring" | "exact" | "f1"
+  #   niah_f1_threshold: 0.5         # f1 模式的閾值
+
+logging:
+  level: "INFO"           # DEBUG / INFO / WARNING / ERROR
