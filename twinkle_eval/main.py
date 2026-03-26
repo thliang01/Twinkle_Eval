@@ -72,6 +72,7 @@ def create_default_config(output_dir: str = "configs") -> int:
         ("config.multiple_choice.template.yaml", "multiple_choice.yaml"),
         ("config.math.template.yaml",             "math.yaml"),
         ("config.bfcl.template.yaml",             "bfcl.yaml"),
+        ("config.niah.template.yaml",             "niah.yaml"),
     ]
     pkg_dir = os.path.dirname(__file__)
 
@@ -636,6 +637,71 @@ HuggingFace 資料集下載:
         help="結果變體名稱（例如: low, medium, high），用於區分不同評測條件",
     )
 
+    # NIAH 資料集生成命令
+    parser.add_argument(
+        "--generate-niah",
+        action="store_true",
+        help="生成自訂 NIAH (Needle in a Haystack) 測試集 JSONL",
+    )
+
+    parser.add_argument(
+        "--haystack",
+        metavar="PATH",
+        help="Haystack 文本檔案或目錄路徑（與 --generate-niah 一起使用）",
+    )
+
+    parser.add_argument(
+        "--needle",
+        metavar="TEXT",
+        help="要藏入 haystack 的事實/句子",
+    )
+
+    parser.add_argument(
+        "--question",
+        metavar="TEXT",
+        help="對應 needle 的提問",
+    )
+
+    parser.add_argument(
+        "--answer",
+        metavar="TEXT",
+        help="Ground truth 答案",
+    )
+
+    parser.add_argument(
+        "--context-lengths",
+        metavar="LENGTHS",
+        default="1024,2048,4096,8192,16384,32768,65536,131072",
+        help="Context 長度列表（以 token 為單位，逗號分隔，預設: 1024,...,131072）",
+    )
+
+    parser.add_argument(
+        "--needle-depths",
+        metavar="DEPTHS",
+        default="0,10,20,30,40,50,60,70,80,90,100",
+        help="Needle 插入深度列表（0-100 百分比，逗號分隔，預設: 0,10,...,100）",
+    )
+
+    parser.add_argument(
+        "--niah-language",
+        metavar="LANG",
+        default="en",
+        help="NIAH 語言代碼（預設: en）",
+    )
+
+    parser.add_argument(
+        "--chars-per-token",
+        type=int,
+        default=4,
+        help="每個 token 的平均字元數（英文≈4, 中文≈2，預設: 4）",
+    )
+
+    parser.add_argument(
+        "--niah-prompt-template",
+        metavar="TEMPLATE",
+        help="自訂 prompt 模板，用 {context} 和 {question} 佔位符",
+    )
+
     # Benchmark 相關命令
     parser.add_argument(
         "--benchmark",
@@ -778,6 +844,47 @@ def main() -> int:
             )
         except Exception as e:
             print(f"❌ 合併結果失敗: {e}")
+            return 1
+
+    # NIAH 資料集生成命令
+    if args.generate_niah:
+        try:
+            from .datasets.niah import generate_niah_dataset
+
+            # 驗證必要參數
+            missing = []
+            for param in ("haystack", "needle", "question", "answer"):
+                if not getattr(args, param, None):
+                    missing.append(f"--{param}")
+            if missing:
+                print(f"❌ --generate-niah 需要以下參數: {', '.join(missing)}")
+                return 1
+
+            context_lengths = [int(x.strip()) for x in args.context_lengths.split(",")]
+            needle_depths = [float(x.strip()) for x in args.needle_depths.split(",")]
+
+            output_path = generate_niah_dataset(
+                haystack_path=args.haystack,
+                needle=args.needle,
+                question=args.question,
+                answer=args.answer,
+                context_lengths=context_lengths,
+                needle_depths=needle_depths,
+                output_dir=args.output_dir,
+                language=args.niah_language,
+                chars_per_token=args.chars_per_token,
+                prompt_template=args.niah_prompt_template,
+            )
+
+            print(f"✅ NIAH 測試集已生成: {output_path}")
+            return 0
+
+        except FileNotFoundError as e:
+            print(f"❌ {e}")
+            return 1
+        except Exception as e:
+            print(f"❌ 生成 NIAH 測試集失敗: {e}")
+            log_error(f"NIAH 生成錯誤: {e}")
             return 1
 
     # Benchmark 命令
