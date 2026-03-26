@@ -427,7 +427,9 @@ EvaluationStrategyFactory.register_strategy("my_strategy", MyStrategy)
 
 命名慣例：`tests/test_{benchmark_name}.py`，class 名稱使用 `TestXxx` 格式。
 
-**此測試檔案必須能在不呼叫任何外部 API 的情況下通過**（pure unit test）。提交 PR 前必須執行 `python3 -m pytest tests/test_{benchmark_name}.py -v` 並確認全部通過。
+**此測試檔案必須能在不呼叫任何外部 API 的情況下通過**（pure unit test）。提交 PR 前必須：
+1. 執行 `python3 -m pytest tests/test_{benchmark_name}.py -v` 確認新增測試全部通過
+2. 執行 `python3 -m pytest tests/ -v` 確認**完整測試套件**沒有因本次變更而產生新的失敗
 
 ---
 
@@ -664,6 +666,11 @@ results/
 - [ ] 沒有 `except: pass` 或未記錄的例外吞噬
 - [ ] API 金鑰等敏感資訊不會出現在輸出或日誌中
 - [ ] 選項標籤沒有硬編碼 A/B/C/D
+
+### 測試
+- [ ] **必須執行完整測試套件** `python3 -m pytest tests/ -v`，確認沒有因本次變更而導致新的測試失敗
+- [ ] 若有既存的失敗測試（如版本不一致、缺少本機 fixture），需確認這些失敗在本次變更**之前**就已存在，並在 PR 描述中說明
+- [ ] 若本次新增了 benchmark，`tests/test_{name}.py` 必須存在且全部通過（第 6.6 節）
 
 ### 文件
 - [ ] PR 描述清楚說明：動機、修改內容、測試方式
