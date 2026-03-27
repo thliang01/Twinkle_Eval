@@ -40,6 +40,35 @@
 - **作者**：iKala
 - **HuggingFace**：`ikala/tmmluplus`
 
+### MMLU-Redux
+
+- **標題**：Are We Done with MMLU?
+- **作者**：Aryo Pradipta Gema et al.
+- **發表**：NAACL 2025
+- **連結**：https://arxiv.org/abs/2406.04127
+- **HuggingFace**：`edinburgh-dawg/mmlu-redux`（v1: 3,000 題 / 30 科）、`edinburgh-dawg/mmlu-redux-2.0`（v2: 5,700 題 / 57 科）
+- **特色**：MMLU 的人工審核修正版。原始 MMLU 約 6.49% 的題目存在標注錯誤，本資料集提供 `error_type` 欄位標記錯誤類型，以及 `correct_answer` 欄位提供修正後的正確答案
+
+### SuperGPQA
+
+- **標題**：SuperGPQA: Scaling LLM Evaluation across 285 Graduate Disciplines
+- **作者**：m-a-p Team
+- **發表**：2025
+- **連結**：https://arxiv.org/abs/2502.14739
+- **HuggingFace**：`m-a-p/SuperGPQA`
+- **規模**：26,529 題，涵蓋 13 個一級學科、72 個二級學科、285 個子學科
+- **特色**：選項數 4–10 不等（A–J），類似 MMLU-Pro。含 `difficulty`（easy/middle/hard）和 `is_calculation` 欄位
+
+### GPQA
+
+- **標題**：GPQA: A Graduate-Level Google-Proof Q&A Benchmark
+- **作者**：David Rein et al.
+- **發表**：2023
+- **連結**：https://arxiv.org/abs/2311.12022
+- **HuggingFace**：`Idavidrein/gpqa`（gated dataset，需申請存取）
+- **規模**：Diamond 198 題、Main 448 題、Extended 546 題
+- **特色**：研究所等級科學問題（物理、化學、生物），人類專家正確率約 65%，非專家僅約 34%
+
 ### 本專案 Example 資料
 
 | 資料集 | 路徑 | 筆數 |
@@ -47,6 +76,9 @@
 | MMLU | `datasets/example/mmlu/` | 20 |
 | MMLU-Pro | `datasets/example/mmlu_pro/` | 20 |
 | TMMLU+ | `datasets/example/tmmluplus/` | 20 |
+| MMLU-Redux | `datasets/example/mmlu_redux/` | 10 |
+| SuperGPQA | `datasets/example/supergpqa/` | 10 |
+| GPQA Diamond | `datasets/example/gpqa/` | 10 |
 
 ---
 

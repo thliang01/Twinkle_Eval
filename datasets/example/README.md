@@ -11,6 +11,9 @@
 | `tmmluplus/` | [ikala/tmmluplus](https://huggingface.co/datasets/ikala/tmmluplus) | 20 | `box` | 繁體中文選擇題（economics × 10、basic_medical_science × 10） |
 | `mmlu/` | [cais/mmlu](https://huggingface.co/datasets/cais/mmlu) | 20 | `box` | 英文選擇題 A–D（high_school_mathematics × 10、high_school_computer_science × 10）|
 | `mmlu_pro/` | [TIGER-Lab/MMLU-Pro](https://huggingface.co/datasets/TIGER-Lab/MMLU-Pro) | 20 | `box` | 英文多選項選擇題 A–J（選項數 9–10 不固定） |
+| `mmlu_redux/` | [edinburgh-dawg/mmlu-redux](https://huggingface.co/datasets/edinburgh-dawg/mmlu-redux) | 10 | `box` | MMLU 修正版 — 人工審核並修正標注錯誤（anatomy × 5、college_mathematics × 5） |
+| `supergpqa/` | [m-a-p/SuperGPQA](https://huggingface.co/datasets/m-a-p/SuperGPQA) | 10 | `box` | 研究所等級跨領域 QA — 285 個子學科、4–10 個選項（10 個不同學科各 1 題） |
+| `gpqa/` | [Idavidrein/gpqa](https://huggingface.co/datasets/Idavidrein/gpqa) | 10 | `box` | 研究所等級科學 QA（GPQA Diamond split）— 物理、化學、生物（gated dataset） |
 
 ### 數學
 
