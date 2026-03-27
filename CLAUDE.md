@@ -413,6 +413,16 @@ EvaluationStrategyFactory.register_strategy("my_strategy", MyStrategy)
 
 文件模板位於 `docs/evals/TEMPLATE.md`。
 
+### 6.5.1 更新 datasets/example/README.md
+
+每次新增或修改 benchmark 的 example 資料集後，**必須**同步更新 `datasets/example/README.md`：
+
+- 在「資料集清單」表格中新增該 benchmark 的條目（目錄、來源、題數、評測方法、說明）
+- 在「快速開始」段落中新增對應的 config.yaml 範例
+- 在「資料格式」段落中新增該 benchmark 的 JSONL 格式說明
+
+此 README 是使用者了解所有 example 資料集的入口，**缺少更新會導致 PR 不符合合入條件**。
+
 ### 6.6 建立測試檔案（tests/test_{benchmark_name}.py）
 
 每個 benchmark **必須**在 `tests/` 下建立對應的 pytest 測試檔案，至少涵蓋以下測試類別：
@@ -686,6 +696,7 @@ results/
   - 分數誤差符合第 6.3 節容差標準（完整 benchmark ±2%，中型 ±3%，小型 ±5%）
 - [ ] 文件中已記錄**速度對比**（本專案單機 vs. 參考框架）
 - [ ] `tests/test_{name}.py` 已建立並通過（第 6.6 節），涵蓋 Extractor、Scorer、Checker、Registry、Example Dataset
+- [ ] `datasets/example/README.md` 已更新，包含新資料集的條目、config 範例、格式說明（第 6.5.1 節）
 
 ### 衝突確認
 確認本 PR 的修改是否與以下開放中 PR 有衝突：

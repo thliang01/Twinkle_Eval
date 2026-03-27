@@ -4,20 +4,64 @@
 
 ## 資料集清單
 
+### 選擇題
+
+| 目錄 | 來源 | 題數 | 評測方法 | 說明 |
+|------|------|------|----------|------|
+| `tmmluplus/` | [ikala/tmmluplus](https://huggingface.co/datasets/ikala/tmmluplus) | 20 | `box` | 繁體中文選擇題（economics × 10、basic_medical_science × 10） |
+| `mmlu/` | [cais/mmlu](https://huggingface.co/datasets/cais/mmlu) | 20 | `box` | 英文選擇題 A–D（high_school_mathematics × 10、high_school_computer_science × 10）|
+| `mmlu_pro/` | [TIGER-Lab/MMLU-Pro](https://huggingface.co/datasets/TIGER-Lab/MMLU-Pro) | 20 | `box` | 英文多選項選擇題 A–J（選項數 9–10 不固定） |
+
+### 數學
+
 | 目錄 | 來源 | 題數 | 評測方法 | 說明 |
 |------|------|------|----------|------|
 | `gsm8k/` | [openai/gsm8k](https://huggingface.co/datasets/openai/gsm8k) | 20 | `math` | 國小/國中程度數學應用題 |
 | `aime2025/` | [MathArena/aime_2025](https://huggingface.co/datasets/MathArena/aime_2025) | 30 | `math` | AIME 2025 競賽題（全題組） |
-| `tmmluplus/` | [ikala/tmmluplus](https://huggingface.co/datasets/ikala/tmmluplus) | 20 | `box` | 繁體中文選擇題（economics × 10、basic_medical_science × 10） |
-| `mmlu/` | [cais/mmlu](https://huggingface.co/datasets/cais/mmlu) | 20 | `box` | 英文選擇題 A–D（high_school_mathematics × 10、high_school_computer_science × 10）|
-| `mmlu_pro/` | [TIGER-Lab/MMLU-Pro](https://huggingface.co/datasets/TIGER-Lab/MMLU-Pro) | 20 | `box` | 英文多選項選擇題 A–J（選項數 9–10 不固定） |
+
+### Function Calling (BFCL)
+
+| 目錄 | 來源 | 題數 | 評測方法 | 說明 |
+|------|------|------|----------|------|
+| `bfcl/` | [gorilla-llm/Berkeley-Function-Calling-Leaderboard](https://huggingface.co/gorilla-llm) | 23 | `bfcl_fc` | BFCL 多種類型（simple / multiple / parallel / live_simple / multi_turn） |
+| `bfcl_v1/` | 同上 | 15 | `bfcl_fc` | BFCL v1 子集（simple / multiple / parallel） |
+| `bfcl_v2/` | 同上 | 5 | `bfcl_fc` | BFCL v2 live_simple 子集 |
+| `bfcl_v3/` | 同上 | 3 | `bfcl_fc` | BFCL v3 multi_turn 子集 |
+
+### Instruction Following
+
+| 目錄 | 來源 | 題數 | 評測方法 | 說明 |
+|------|------|------|----------|------|
+| `ifeval/` | [google/IFEval](https://huggingface.co/datasets/google/IFEval) | 10 | `ifeval` | Google IFEval — 25 種可驗證指令的遵循度評測 |
+| `ifbench/` | [Yale-LILY/IFBench](https://huggingface.co/datasets/Yale-LILY/IFBench) | 14 | `ifbench` | IFBench — 語言學約束指令遵循評測（音節、詞頻、語音等） |
+
+### 長文本 / 大海撈針 (NIAH)
+
+| 目錄 | 來源 | 題數 | 評測方法 | 說明 |
+|------|------|------|----------|------|
+| `niah/kamradt/` | Kamradt NeedleInAHaystack | 10 | `niah` | 英文大海撈針（不同 context 長度與 needle 深度） |
+| `niah/needlebench/` | [NeedleBench](https://github.com/open-compass/opencompass) | 5 | `niah` | 中文大海撈針 |
+| `niah/longbench/` | [THUDM/LongBench](https://huggingface.co/datasets/THUDM/LongBench) | 5 | `niah` | LongBench 段落檢索（中文） |
+
+### RAG 評測 (RAGAS)
+
+| 目錄 | 來源 | 題數 | 評測方法 | 說明 |
+|------|------|------|----------|------|
+| `ragas/` | [explodinggradients/WikiEval](https://huggingface.co/datasets/explodinggradients/WikiEval) | 10 | `ragas` | LLM-as-judge 評估 RAG pipeline 品質（faithfulness / answer_relevancy / context_precision / context_recall） |
+
+### Text-to-SQL
+
+| 目錄 | 來源 | 題數 | 評測方法 | 說明 |
+|------|------|------|----------|------|
+| `spider/` | [Spider 1.0](https://yale-lily.github.io/spider) | 10 | `text2sql` | 跨領域 Text-to-SQL（concert_singer、pets_1 兩個 SQLite DB） |
+| `bird/` | [BIRD](https://bird-bench.github.io/) | 10 | `text2sql` | 含外部知識的 Text-to-SQL（california_schools、financial 兩個 SQLite DB） |
+| `spider2_lite/` | [Spider 2.0-lite](https://spider2-sql.github.io/) | 10 | `text2sql` | 企業級 Text-to-SQL 的 SQLite 子集（book_store DB）。僅支援 lite 版（85 題 SQLite-only），完整版需 BigQuery/Snowflake 雲端帳號 |
 
 ## 快速開始
 
 ### 選擇題（box 模式）
 
 ```yaml
-# config.yaml
 evaluation:
   dataset_paths:
     - "datasets/example/tmmluplus/"
@@ -37,7 +81,6 @@ evaluation:
 需先安裝：`pip install twinkle-eval[math]`
 
 ```yaml
-# config.yaml
 evaluation:
   dataset_paths:
     - "datasets/example/gsm8k/"
@@ -47,18 +90,56 @@ evaluation:
     en: "Please solve the problem step by step. Present your final answer in \\boxed{answer} format."
 ```
 
-### MMLU-Pro（多選項，A–J）
+### Function Calling（bfcl_fc 模式）
+
+需先安裝：`pip install twinkle-eval[tool]`
 
 ```yaml
-# config.yaml
 evaluation:
   dataset_paths:
-    - "datasets/example/mmlu_pro/"
-  evaluation_method: box
-  system_prompt:
-    en: "Please read the question carefully and select the best answer. Present your final answer in the format \\boxed{answer}, e.g., \\boxed{A}."
-  datasets_prompt_map:
-    "datasets/example/mmlu_pro/": "en"
+    - "datasets/example/bfcl/simple/"
+  evaluation_method: bfcl_fc
+```
+
+### Instruction Following（ifeval 模式）
+
+需先安裝：`pip install twinkle-eval[ifeval]`
+
+```yaml
+evaluation:
+  dataset_paths:
+    - "datasets/example/ifeval/"
+  evaluation_method: ifeval
+```
+
+### 大海撈針（niah 模式）
+
+```yaml
+evaluation:
+  dataset_paths:
+    - "datasets/example/niah/kamradt/"
+  evaluation_method: niah
+```
+
+### RAGAS（ragas 模式）
+
+```yaml
+evaluation:
+  dataset_paths:
+    - "datasets/example/ragas/"
+  evaluation_method: ragas
+```
+
+### Text-to-SQL（text2sql 模式）
+
+```yaml
+evaluation:
+  dataset_paths:
+    - "datasets/example/spider/"
+  evaluation_method: text2sql
+  strategy_config:
+    text2sql_scoring_mode: "exec"
+    text2sql_db_base_path: "datasets/example/spider/databases"
 ```
 
 ### 混合模式（dataset_overrides）
@@ -89,6 +170,31 @@ evaluation:
 **數學題（gsm8k、aime2025）**
 ```json
 {"question": "...", "answer": "42"}
+```
+
+**Function Calling（bfcl）**
+```json
+{"question": "[{\"role\": \"user\", \"content\": \"...\"}]", "functions": "[...]", "answer": "..."}
+```
+
+**Instruction Following（ifeval、ifbench）**
+```json
+{"question": "...", "instruction_id_list": "[...]", "kwargs": "[...]"}
+```
+
+**大海撈針（niah）**
+```json
+{"question": "...", "answer": "the secret number is 42"}
+```
+
+**RAGAS**
+```json
+{"question": "<pre-assembled judge prompt>", "answer": "<metadata JSON>"}
+```
+
+**Text-to-SQL（spider、bird、spider2_lite）**
+```json
+{"question": "<schema + question prompt>", "answer": "{\"sql\": \"SELECT ...\", \"db_id\": \"...\"}",  "db_id": "..."}
 ```
 
 ## 重新生成
